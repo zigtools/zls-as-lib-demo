@@ -1,6 +1,20 @@
 const std = @import("std");
 const zls = @import("zls");
 
+pub const std_options = struct {
+    pub const log_level = .debug;
+
+    pub fn logFn(
+        comptime level: std.log.Level,
+        comptime scope: @TypeOf(.EnumLiteral),
+        comptime format: []const u8,
+        args: anytype,
+    ) void {
+        if (comptime std.mem.startsWith(u8, @tagName(scope), "zls_")) return;
+        std.log.defaultLog(level, scope, format, args);
+    }
+};
+
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
 
@@ -27,6 +41,8 @@ pub fn main() !void {
     const bs_uri = try allocator.dupe(u8, "file:///C:/Programming/Zig/zls-as-lib-demo/src/bs.zig");
     // NOTE: This function takes ownership of the input `text`
     _ = try server.document_store.openDocument(bs_uri, try allocator.dupeZ(u8, ""));
+
+    try std.io.getStdOut().writer().writeAll("Enter an input for completion below: (Try `std.` and `zls.`)\n");
 
     var input_buf: [1024]u8 = undefined;
     while (true) {
