@@ -4,7 +4,7 @@
     .dependencies = .{
         .zls = .{
             .url = "https://github.com/zigtools/zls/archive/build-runner-param-plus-library.tar.gz",
-            .hash = "1220b567bf5c290bbb21a857a029387086ac7d091cc2f3d50c56d939860fd100a72b",
+            .hash = "1220c71bd74a9d22950934e259d0717bbf0b0e61563212e105f65a550c0f7dce25b2",
         },
     },
 }
