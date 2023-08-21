@@ -31,7 +31,7 @@ pub fn main() !void {
     // Create a server, then set its encoding
     // to utf-8 so we can use the same indices
     // as a normal zig []const u8
-    var server = try zls.Server.create(allocator, &config, null, false, false);
+    var server = try zls.Server.create(allocator, &config, null);
     server.offset_encoding = .@"utf-8";
     defer server.destroy();
 
@@ -48,7 +48,7 @@ pub fn main() !void {
     while (true) {
         // Free the server arena if it's past
         // a certain threshold
-        defer server.maybeFreeArena();
+        //defer server.maybeFreeArena();
 
         var stdio = std.io.getStdIn().reader();
         const input = stdio.readUntilDelimiterOrEof(&input_buf, '\n') catch |err| switch (err) {
@@ -71,15 +71,17 @@ pub fn main() !void {
         , .{input}));
 
         // We request completions from zls
-        const completions: []const zls.types.CompletionItem = (try server.completionHandler(.{
+
+        const emptyList: zls.Server.ResultType("textDocument/completion") = .{ .CompletionList = zls.types.CompletionList{ .isIncomplete = true, .items = &.{} } };
+        const completions: []const zls.types.CompletionItem = (try server.completionHandler(allocator, .{
             .textDocument = .{
                 .uri = "file:///C:/Programming/Zig/zls-as-lib-demo/src/bs.zig",
             },
             .position = .{
                 .line = 4,
-                .character = @intCast(u32, 4 + input.len),
+                .character = @intCast(4 + input.len),
             },
-        }) orelse zls.types.CompletionList{ .isIncomplete = true, .items = &.{} }).items;
+        }) orelse emptyList).?.CompletionList.items;
 
         // We print out the completions
         for (completions) |comp| {
