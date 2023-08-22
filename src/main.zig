@@ -81,7 +81,7 @@ pub fn main() !void {
                 .line = 4,
                 .character = @intCast(4 + input.len),
             },
-        }) orelse emptyList).?.CompletionList.items;
+        }) orelse emptyList).CompletionList.items;
 
         // We print out the completions
         for (completions) |comp| {
