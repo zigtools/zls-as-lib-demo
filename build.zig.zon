@@ -3,8 +3,8 @@
     .version = "1.0.0",
     .dependencies = .{
         .zls = .{
-            .url = "https://github.com/zigtools/zls/archive/build-runner-param-plus-library.tar.gz",
-            .hash = "1220d72a4bc8e8c934d3854b29e065cbe7d09328c83368b0e658d3f6c0acd7424d92",
+            .url = "https://github.com/zigtools/zls/archive/refs/tags/0.11.0.tar.gz",
+            .hash = "1220ef39b9be17640457ba1a737ebbc664d7b728a84b3e088d89258a115816bf28c9",
         },
     },
 }
